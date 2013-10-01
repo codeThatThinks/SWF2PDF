@@ -393,7 +393,7 @@
 		55F65A3014429BCB00E12C27 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0460;
 			};
 			buildConfigurationList = 55F65A3314429BCB00E12C27 /* Build configuration list for PBXProject "SwiffCore" */;
 			compatibilityVersion = "Xcode 3.2";
