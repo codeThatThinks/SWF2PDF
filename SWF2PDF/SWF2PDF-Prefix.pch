@@ -1,0 +1,8 @@
+//
+// Prefix header for all source files of the 'SWF2PDF' target in the 'SWF2PDF' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+    #import <SwiffCore.h>
+#endif

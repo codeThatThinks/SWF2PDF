@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>movies</key>
+	<array>
+		<dict>
+			<key>url</key>
+			<string>http://www.potterpuppetpals.com/Potter.swf</string>
+			<key>name</key>
+			<string>Potter Puppet Pals - Bothering Snape</string>
+			<key>author</key>
+			<string>Neil Cicierega</string>
+		</dict>
+		<dict>
+			<key>url</key>
+			<string>http://www.potterpuppetpals.com/Potter2.swf</string>
+			<key>name</key>
+			<string>Potter Puppet Pals - Trouble at Hogwarts</string>
+			<key>author</key>
+			<string>Neil Cicierega</string>
+		</dict>
+		<dict>
+			<key>url</key>
+			<string>bundle:TestSuite.swf</string>
+			<key>name</key>
+			<string>Test Suite</string>
+			<key>author</key>
+			<string>SwiffCore</string>
+		</dict>
+		<dict>
+			<key>url</key>
+			<string>bundle:DynamicText.swf</string>
+			<key>name</key>
+			<string>Dynamic Text</string>
+			<key>author</key>
+			<string>SwiffCore</string>
+		</dict>
+		<dict>
+			<key>url</key>
+			<string>bundle:Bitmaps.swf</string>
+			<key>name</key>
+			<string>Bitmaps</string>
+			<key>author</key>
+			<string>SwiffCore</string>
+		</dict>
+		<dict>
+			<key>url</key>
+			<string>http://musictheory.net/v2/swf/lesson44.swf</string>
+			<key>name</key>
+			<string>Roman Numeral Analysis: Triads</string>
+			<key>author</key>
+			<string>musictheory.net</string>
+		</dict>
+		<dict>
+			<key>url</key>
+			<string>http://musictheory.net/v2/swf/lesson48.swf</string>
+			<key>name</key>
+			<string>More Seventh Chords</string>
+			<key>author</key>
+			<string>musictheory.net</string>
+		</dict>
+		<dict>
+			<key>url</key>
+			<string>http://musictheory.net/v2/swf/lesson51.swf</string>
+			<key>name</key>
+			<string>Voicing Chords</string>
+			<key>author</key>
+			<string>musictheory.net</string>
+		</dict>
+	</array>
+</dict>
+</plist>
