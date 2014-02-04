@@ -2,7 +2,7 @@
 
 ![Screenshot](https://raw.github.com/codeThatThinks/SWF2PDF/master/screenshot.png)
 
-Converts single-frame SWF files to PDF documents.
+Converts SWF files to PDF documents.
 
 ## Requirements
 * OSX 10.8 SDK.

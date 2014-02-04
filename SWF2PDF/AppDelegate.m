@@ -142,6 +142,7 @@
             
             // load swf data into SwiffCore
             SwiffMovie *swfMovie = [[SwiffMovie alloc] initWithData:swfFileData];
+            SwiffRenderer *swfRenderer = [[SwiffRenderer alloc] initWithMovie:swfMovie];
             
             // make sure frame count is 1, multiframe swfs not supported
             if([[swfMovie frames] count] != 1)
@@ -150,39 +151,44 @@
                 return;
             }
             
-            // create pdf file path
-            NSString *pdfPath = [NSString stringWithFormat:@"%@/%@%@", [swfFile stringByDeletingLastPathComponent], [[swfFile lastPathComponent] stringByDeletingPathExtension], @".pdf"];
+            // loop through frames in order to handle multi-frame pdfs
+            for(NSUInteger frameCount = 0; frameCount < [[swfMovie frames] count]; frameCount++)
+            {
+                // create pdf file path
+                NSString *pdfPath = [NSString stringWithFormat:@"%@/%@%@%@", [swfFile stringByDeletingLastPathComponent], [[swfFile lastPathComponent] stringByDeletingPathExtension], ([[swfMovie frames] count] != 1) ? [NSString stringWithFormat:@"%@%lu", @"_", (unsigned long)frameCount] : @"", @".pdf"];
+                
+                // convert pdf file path to CFURL
+                CFStringRef pdfPathCFString = CFStringCreateWithCString(NULL, [pdfPath UTF8String], kCFStringEncodingUTF8);
+                CFURLRef pdfPathCFURL = CFURLCreateWithFileSystemPath(NULL, pdfPathCFString, kCFURLPOSIXPathStyle, 0);
+                
+                // create PDF drawing context
+                CGContextRef pdfContext = CGPDFContextCreateWithURL(pdfPathCFURL, NULL, NULL);
+                
+                // create dictionary for page information
+                CGRect pageRect = [swfMovie stageRect];
+                CFMutableDictionaryRef pageDictionary = CFDictionaryCreateMutable(NULL, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+                CFDataRef boxData = CFDataCreate(NULL, (const UInt8 *)&pageRect, sizeof (CGRect));
+                CFDictionarySetValue(pageDictionary, kCGPDFContextMediaBox, boxData);
+                
+                // create a page in the PDF file
+                CGPDFContextBeginPage(pdfContext, pageDictionary);
+                
+                // flip drawing context to proper page orientation
+                CGContextSaveGState(pdfContext);
+                CGContextTranslateCTM(pdfContext, 0, pageRect.size.height);
+                CGContextScaleCTM(pdfContext, 1.0, -1.0);
+                
+                // render frame on pdf
+                [swfRenderer renderPlacedObjects:[[swfMovie frames][frameCount] placedObjects] inContext:pdfContext];
+                
+                // end pdf page
+                CGPDFContextEndPage(pdfContext);
+                
+                // close pdf
+                CGContextRelease(pdfContext);
+
+            }
             
-            // convert pdf file path to CFURL
-            CFStringRef pdfPathCFString = CFStringCreateWithCString(NULL, [pdfPath UTF8String], kCFStringEncodingUTF8);
-            CFURLRef pdfPathCFURL = CFURLCreateWithFileSystemPath(NULL, pdfPathCFString, kCFURLPOSIXPathStyle, 0);
-            
-            // create PDF drawing context
-            CGContextRef pdfContext = CGPDFContextCreateWithURL(pdfPathCFURL, NULL, NULL);
-            
-            // create dictionary for page information
-            CGRect pageRect = [swfMovie stageRect];
-            CFMutableDictionaryRef pageDictionary = CFDictionaryCreateMutable(NULL, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-            CFDataRef boxData = CFDataCreate(NULL, (const UInt8 *)&pageRect, sizeof (CGRect));
-            CFDictionarySetValue(pageDictionary, kCGPDFContextMediaBox, boxData);
-            
-            // create a page in the PDF file
-            CGPDFContextBeginPage(pdfContext, pageDictionary);
-            
-            // flip drawing context to proper page orientation
-            CGContextSaveGState(pdfContext);
-            CGContextTranslateCTM(pdfContext, 0, pageRect.size.height);
-            CGContextScaleCTM(pdfContext, 1.0, -1.0);
-            
-            // render frame on pdf
-            SwiffRenderer *swfRenderer = [[SwiffRenderer alloc] initWithMovie:swfMovie];
-            [swfRenderer renderPlacedObjects:[[swfMovie frames][0] placedObjects] inContext:pdfContext];
-            
-            // end pdf page
-            CGPDFContextEndPage(pdfContext);
-            
-            // close pdf
-            CGContextRelease(pdfContext);
         }
         
         // stop spinner
